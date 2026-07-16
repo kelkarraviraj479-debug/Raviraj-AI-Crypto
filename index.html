@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Raviraj AI Crypto</title>
+
 <style>
+
 body{
   background:#0f172a;
   color:white;
-  font-family:Arial;
+  font-family:Arial,sans-serif;
   text-align:center;
+}
+
+h1{
+  color:#22c55e;
 }
 
 .card{
@@ -19,25 +26,95 @@ body{
 
 .price{
   color:#22c55e;
-  font-size:25px;
+  font-size:28px;
+  font-weight:bold;
 }
+
+button{
+  background:#22c55e;
+  color:white;
+  border:none;
+  padding:12px 25px;
+  border-radius:10px;
+  font-size:16px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <h1>🚀 Raviraj AI Crypto</h1>
+
 <p>AI Crypto Trading Assistant</p>
 
-<div class="card">
-<h2>₿ Bitcoin</h2>
-<p class="price">$0.00</p>
-</div>
 
 <div class="card">
-<h2>Ethereum</h2>
-<p class="price">$0.00</p>
+
+<h2>₿ Bitcoin</h2>
+
+<p class="price btc">Loading...</p>
+
 </div>
+
+
+<div class="card">
+
+<h2>Ξ Ethereum</h2>
+
+<p class="price eth">Loading...</p>
+
+</div>
+
+
+<button onclick="getPrice()">
+Refresh Price
+</button>
+
+
+<script>
+
+async function getPrice(){
+
+try{
+
+let response = await fetch(
+"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd"
+);
+
+
+let data = await response.json();
+
+
+document.querySelector(".btc").innerHTML =
+"$ " + data.bitcoin.usd;
+
+
+document.querySelector(".eth").innerHTML =
+"$ " + data.ethereum.usd;
+
+
+}
+
+catch(error){
+
+document.querySelector(".btc").innerHTML =
+"Error";
+
+document.querySelector(".eth").innerHTML =
+"Error";
+
+}
+
+}
+
+
+getPrice();
+
+
+</script>
+
 
 </body>
 </html>
