@@ -63,3 +63,27 @@ async function loadCrypto() {
 
 loadCrypto();
 setInterval(loadCrypto, 30000);
+const chartResponse = await fetch(
+  "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=inr&days=7"
+);
+
+const chartData = await chartResponse.json();
+
+const labels = chartData.prices.map(item =>
+  new Date(item[0]).toLocaleDateString()
+);
+
+const prices = chartData.prices.map(item => item[1]);
+
+new Chart(document.getElementById("btcChart"), {
+  type: "line",
+  data: {
+    labels,
+    datasets: [{
+      label: "Bitcoin Price",
+      data: prices,
+      borderColor: "#22c55e",
+      fill: false
+    }]
+  }
+});
