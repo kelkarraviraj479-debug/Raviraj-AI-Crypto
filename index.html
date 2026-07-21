@@ -1,120 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Raviraj AI Crypto</title>
 
-<style>
-
-body{
-  background:#0f172a;
-  color:white;
-  font-family:Arial,sans-serif;
-  text-align:center;
-}
-
-h1{
-  color:#22c55e;
-}
-
-.card{
-  background:#1e293b;
-  margin:20px;
-  padding:20px;
-  border-radius:15px;
-}
-
-.price{
-  color:#22c55e;
-  font-size:28px;
-  font-weight:bold;
-}
-
-button{
-  background:#22c55e;
-  color:white;
-  border:none;
-  padding:12px 25px;
-  border-radius:10px;
-  font-size:16px;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
-
 <body>
+
+<div class="container">
 
 <h1>🚀 Raviraj AI Crypto</h1>
 
-<p>AI Crypto Trading Assistant</p>
-
-
 <div class="card">
-
 <h2>₿ Bitcoin</h2>
-
-<p class="price btc">Loading...</p>
-
+<p id="btc">Loading...</p>
 </div>
-
 
 <div class="card">
-
 <h2>Ξ Ethereum</h2>
+<p id="eth">Loading...</p>
+</div>
 
-<p class="price eth">Loading...</p>
+<div class="card">
+<h2>◎ Solana</h2>
+<p id="sol">Loading...</p>
+</div>
+
+<div class="card">
+<h2>✕ XRP</h2>
+<p id="xrp">Loading...</p>
+</div>
+
+<div class="card">
+<h2>🤖 AI Signal</h2>
+<p id="signal">Loading...</p>
+</div>
+
+<div class="card">
+<h2>🕒 Last Updated</h2>
+<p id="updated">Loading...</p>
+</div>
+
+<div class="card">
+<h2>📊 Top 10 Coins</h2>
+
+<ol id="topCoins">
+
+<li>Loading...</li>
+
+</ol>
 
 </div>
 
+</div>
 
-<button onclick="getPrice()">
-Refresh Price
-</button>
-
-
-<script>
-
-async function getPrice(){
-
-try{
-
-let response = await fetch(
-"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd"
-);
-
-
-let data = await response.json();
-
-
-document.querySelector(".btc").innerHTML =
-"$ " + data.bitcoin.usd;
-
-
-document.querySelector(".eth").innerHTML =
-"$ " + data.ethereum.usd;
-
-
-}
-
-catch(error){
-
-document.querySelector(".btc").innerHTML =
-"Error";
-
-document.querySelector(".eth").innerHTML =
-"Error";
-
-}
-
-}
-
-
-getPrice();
-
-
-</script>
-
+<script src="script.js"></script>
 
 </body>
 </html>
