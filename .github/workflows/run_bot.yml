@@ -2,8 +2,8 @@ name: Crypto Bot Auto Run
 
 on:
   schedule:
-    - cron: '0 * * * *' # दर तासाला आपोआप रन होईल
-  workflow_dispatch: # मॅन्युअली रन करण्यासाठी
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
