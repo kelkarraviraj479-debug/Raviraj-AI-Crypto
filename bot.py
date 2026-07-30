@@ -2,9 +2,10 @@ import pandas as pd
 import requests
 from ta.momentum import RSIIndicator
 
+
 # Telegram चे डिटेल्स
 TELEGRAM_TOKEN = "8656577007:AAG-88xWvn-3kXwk8cTeoHHWC7WtJ_eDAys"
-TELEGRAM_CHAT_ID = "8678438898"
+TELEGRAM_CHAT_ID = "8670438090"
 
 
 def send_telegram_message(message):
@@ -20,13 +21,20 @@ def send_telegram_message(message):
         print(f"Telegram Error: {e}")
 
 
-def analyze_crypto(symbol="BTCUSDT"):
-    url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval=1h&limit=100"
-    data = requests.get(url).json()
+def analyze_crypto(coin_id="bitcoin", symbol="BTC"):
+    # CoinGecko API वरून गेल्या १४ दिवसांचा डेटा घेणे
+    url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart?vs_currency=usd&days=14&interval=daily"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(url, headers=headers).json()
 
-    df = pd.DataFrame(data)
-    df["close"] = df[4].astype(float)
+    if "prices" not in response:
+        print(f"Data fetch error for {symbol}")
+        return
 
+    prices = [item[1] for item in response["prices"]]
+    df = pd.DataFrame(prices, columns=["close"])
+
+    # RSI कॅल्क्युलेशन
     rsi_calc = RSIIndicator(close=df["close"], window=14)
     df["RSI"] = rsi_calc.rsi()
 
@@ -39,14 +47,13 @@ def analyze_crypto(symbol="BTCUSDT"):
     elif rsi > 70:
         signal = "🔴 SELL (विक्री करा - Market Overbought)"
 
-    msg = f"🤖 *Crypto Bot Alert*\n\n🪙 *Pair:* {symbol}\n💵 *Price:* ${price:.2f}\n📊 *RSI:* {rsi:.2f}\n\n🎯 *Signal:* {signal}"
+    msg = f"🤖 *Crypto Bot Alert*\n\n🪙 *Coin:* {symbol}\n💵 *Price:* ${price:,.2f}\n📊 *RSI:* {rsi:.2f}\n\n🎯 *Signal:* {signal}"
 
     print(msg)
     send_telegram_message(msg)
 
 
 if __name__ == "__main__":
-    analyze_crypto("BTCUSDT")
-    analyze_crypto("ETHUSDT")
+    analyze_crypto("bitcoin", "BTC")
+    analyze_crypto("ethereum", "ETH")
     
-  
