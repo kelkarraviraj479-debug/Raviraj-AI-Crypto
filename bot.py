@@ -5,7 +5,7 @@ from ta.momentum import RSIIndicator
 
 # Telegram चे डिटेल्स
 TELEGRAM_TOKEN = "8656577007:AAG-88xWvn-3kXwk8cTeoHHWC7WtJ_eDAys"
-TELEGRAM_CHAT_ID = "8670438090"
+TELEGRAM_CHAT_ID = "8678438898"
 
 
 def send_telegram_message(message):
