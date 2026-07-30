@@ -2,6 +2,23 @@ import pandas as pd
 import requests
 from ta.momentum import RSIIndicator
 
+# Telegram चे डिटेल्स
+TELEGRAM_TOKEN = "8656577007:AAG-88xWvn-3kXwk8cTeoHHWC7WtJ_eDAys"
+TELEGRAM_CHAT_ID = "8678438898"
+
+
+def send_telegram_message(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown",
+    }
+    try:
+        requests.post(url, data=payload)
+    except Exception as e:
+        print(f"Telegram Error: {e}")
+
 
 def analyze_crypto(symbol="BTCUSDT"):
     url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval=1h&limit=100"
@@ -16,19 +33,20 @@ def analyze_crypto(symbol="BTCUSDT"):
     price = df["close"].iloc[-1]
     rsi = df["RSI"].iloc[-1]
 
-    print(f"--- {symbol} Analysis ---")
-    print(f"Price: ${price}")
-    print(f"RSI: {rsi:.2f}")
-
+    signal = "🟡 HOLD (थांबा)"
     if rsi < 30:
-        print("Signal: 🟢 BUY (खरेदी करा)")
+        signal = "🟢 BUY (खरेदी करा - Market Oversold)"
     elif rsi > 70:
-        print("Signal: 🔴 SELL (विक्री करा)")
-    else:
-        print("Signal: 🟡 HOLD (थांबा)")
+        signal = "🔴 SELL (विक्री करा - Market Overbought)"
+
+    msg = f"🤖 *Crypto Bot Alert*\n\n🪙 *Pair:* {symbol}\n💵 *Price:* ${price:.2f}\n📊 *RSI:* {rsi:.2f}\n\n🎯 *Signal:* {signal}"
+
+    print(msg)
+    send_telegram_message(msg)
 
 
 if __name__ == "__main__":
     analyze_crypto("BTCUSDT")
     analyze_crypto("ETHUSDT")
+    
   
